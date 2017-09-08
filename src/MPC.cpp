@@ -8,7 +8,7 @@ using CppAD::AD;
 // TODO: Set the timestep length and duration
 const size_t N = 10;
 const double dt = 0.1;
-const double ref_v = 100;
+const double ref_v = 70;
 
 const int x_start = 0;
 const int y_start = x_start + N;
@@ -17,15 +17,15 @@ const int v_start = psi_start + N;
 const int cte_start = v_start + N;
 const int epsi_start = cte_start + N;
 const int delta_start = epsi_start + N;
-const int a_start = delta_start + N -1;
+const int a_start = delta_start + N - 1;
 
-const double cte_cost_factor = 2500;
-const double epsi_cost_factor = 2500;
+const double cte_cost_factor = 3000;
+const double epsi_cost_factor = 3000;
 const double v_cost_factor = 1;
-const double delta_cost_factor = 10;
-const double a_cost_factor = 10;
-const double delta_diff_cost_factor = 100;
-const double a_diff_cost_factor = 10;
+const double delta_cost_factor = 150;
+const double a_cost_factor = 150;
+const double delta_diff_cost_factor = 200;
+const double a_diff_cost_factor = 20;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -107,6 +107,10 @@ public:
       // Only consider the actuation at time t.
       AD<double> delta0 = vars[delta_start + t - 1];
       AD<double> a0 = vars[a_start + t - 1];
+      if (t > 1) {
+        a0 = vars[a_start + t - 2];
+        delta0 = vars[delta_start + t - 2];
+      }
 
       AD<double> f0 = coeffs[0] + coeffs[1] * x0 + coeffs[2] * CppAD::pow(x0, 2) + coeffs[3] * CppAD::pow(x0, 3);
       AD<double> psides0 = CppAD::atan(coeffs[1] + 2 * coeffs[2] * x0 + 3 * coeffs[3] * CppAD::pow(x0, 2));
@@ -123,10 +127,10 @@ public:
       // epsi[t] = psi[t] - psides[t-1] + v[t-1] * delta[t-1] / Lf * dt
       fg[1 + x_start + t] = x1 - (x0 + v0 * CppAD::cos(psi0) * dt);
       fg[1 + y_start + t] = y1 - (y0 + v0 * CppAD::sin(psi0) * dt);
-      fg[1 + psi_start + t] = psi1 - (psi0 + v0 * delta0 / Lf * dt);
+      fg[1 + psi_start + t] = psi1 - (psi0 - v0/Lf * delta0 * dt);
       fg[1 + v_start + t] = v1 - (v0 + a0 * dt);
       fg[1 + cte_start + t] = cte1 - ((f0 - y0) + (v0 * CppAD::sin(epsi0) * dt));
-      fg[1 + epsi_start + t] = epsi1 - ((psi0 - psides0) + v0 * delta0 / Lf * dt);
+      fg[1 + epsi_start + t] = epsi1 - ((psi0 - psides0) - v0/Lf * delta0 * dt);
     }
   }
 };
