@@ -26,6 +26,13 @@ Afterwards, points are calculated to show the 'ideal' way, where the cte is as l
 * Model Predictive Control with Latency
 Latency of 100ms is introduced. This means that after values have been calculated, a delay of 100ms is introduced before those values are sent back to the simulator. We take thise value into account when recalculating the model.
 
+## How to run
+I've used the steps described below to install all required libraries, but:
+* I had to use Ipopt v3.12.7; other versions were not workin
+* I used the Eclipse cmake generator with debug mode active: `cmake -G"Eclipse CDT4" -DCMAKE_BUILD_TYPE=Debug`
+* I have to start the simulator using the following command, not to have decimal conversion issues:
+  `LC_ALL=C ./term2_sim.x86_64`
+
 ---
 
 ## Dependencies
