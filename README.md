@@ -5,8 +5,10 @@ Self-Driving Car Engineer Nanodegree Program
 
 ## Rubric Questions
 
-* The Model
+* The Model:
+
   ![alt text][constraints]
+  
 The model, as shown on the following image has:
   * Input parameters: [x,y,ψ,v,cte,eψ] =  x, y, psi, velocity, cross-track-error en psi-error
   * Output parameters:[δ,a] = acceleration and steering delta
