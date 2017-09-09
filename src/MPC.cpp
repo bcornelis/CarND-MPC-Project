@@ -8,7 +8,7 @@ using CppAD::AD;
 // TODO: Set the timestep length and duration
 const size_t N = 10;
 const double dt = 0.1;
-const double ref_v = 70;
+const double ref_v = 55;
 
 const int x_start = 0;
 const int y_start = x_start + N;
@@ -22,7 +22,7 @@ const int a_start = delta_start + N - 1;
 const double cte_cost_factor = 2;
 const double epsi_cost_factor = 20;
 const double v_cost_factor = 2;
-const double delta_cost_factor = 10000;
+const double delta_cost_factor = 15000;
 const double a_cost_factor = 1;
 const double delta_diff_cost_factor = 10;
 const double a_diff_cost_factor = 1;
