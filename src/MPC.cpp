@@ -19,13 +19,13 @@ const int epsi_start = cte_start + N;
 const int delta_start = epsi_start + N;
 const int a_start = delta_start + N - 1;
 
-const double cte_cost_factor = 3000;
-const double epsi_cost_factor = 3000;
-const double v_cost_factor = 1;
-const double delta_cost_factor = 150;
-const double a_cost_factor = 150;
-const double delta_diff_cost_factor = 200;
-const double a_diff_cost_factor = 20;
+const double cte_cost_factor = 2;
+const double epsi_cost_factor = 20;
+const double v_cost_factor = 2;
+const double delta_cost_factor = 10000;
+const double a_cost_factor = 1;
+const double delta_diff_cost_factor = 10;
+const double a_diff_cost_factor = 1;
 
 // This value assumes the model presented in the classroom is used.
 //
@@ -147,12 +147,12 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   bool ok = true;
   typedef CPPAD_TESTVECTOR(double)Dvector;
 
-  double x = state[0];
-  double y = state[1];
-  double psi = state[2];
-  double v = state[3];
-  double cte = state[4];
-  double epsi = state[5];
+  const double x = state[0];
+  const double y = state[1];
+  const double psi = state[2];
+  const double v = state[3];
+  const double cte = state[4];
+  const double epsi = state[5];
 
   // TODO: Set the number of model variables (includes both states and inputs).
   // For example: If the state is a 4 element vector, the actuators is a 2
@@ -169,13 +169,6 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   for (int i = 0; i < n_vars; i++) {
     vars[i] = 0;
   }
-  // Set the initial variable values
-  vars[x_start] = x;
-  vars[y_start] = y;
-  vars[psi_start] = psi;
-  vars[v_start] = v;
-  vars[cte_start] = cte;
-  vars[epsi_start] = epsi;
 
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);

@@ -32,6 +32,17 @@ string hasData(string s) {
   return "";
 }
 
+void transform_waypoints(vector<double>& ptsx, vector<double>& ptsy, double px,
+    double py, double psi, Eigen::VectorXd& targetX, Eigen::VectorXd& targetY) {
+  for (int i = 0; i < ptsx.size(); ++i) {
+    double diff_x = ptsx[i] - px;
+    double diff_y = ptsy[i] - py;
+
+    targetX[i] = diff_x * cos(-psi) - diff_y * sin(-psi);
+    targetY[i] = diff_x * sin(-psi) + diff_y * cos(-psi);
+  }
+}
+
 // Evaluate a polynomial.
 double polyeval(Eigen::VectorXd coeffs, double x) {
   double result = 0.0;
@@ -103,13 +114,7 @@ int main() {
             // perform transformation
             Eigen::VectorXd xvals(ptsx.size());
             Eigen::VectorXd yvals(ptsy.size());
-            for(int i=0; i<ptsx.size(); ++i) {
-              double diff_x = ptsx[i] - px;
-              double diff_y = ptsy[i] - py;
-
-              xvals[i] = diff_x * cos(-psi) - diff_y * sin(-psi);
-              yvals[i] = diff_x * sin(-psi) + diff_y * cos(-psi);
-            }
+            transform_waypoints(ptsx, ptsy, px, py, psi, xvals, yvals);
 
             Eigen::VectorXd coeffs = polyfit(xvals, yvals, 3);
             double cte = polyeval(coeffs, 0);    // px = 0, py = 0
