@@ -1,6 +1,29 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
+[constraints]: ./media/constraints.png
+
+## Rubric Questions
+
+* The Model
+  ![alt text][constraints]
+The model, as shown on the following image has:
+  * Input parameters: [x,y,ψ,v,cte,eψ] =  x, y, psi, velocity, cross-track-error en psi-error
+  * Output parameters:[δ,a] = acceleration and steering delta
+
+* Timestep Length and Elapsed Duration (N & dt)
+As values, I used the default values. This means that N=10, and dt=0.1. This means that the controller uses a (10 * 0.1s = 1s) timeframe to find a proper traject, and correct for errors.
+
+* Polynomial Fitting and MPC Preprocessing
+First the waypoints are transformed from world coordinates into car coordinates. This allows for easier calculation afterwards. Next the coefficients are calculated and the state vector is created. As we're in car coordinate system, the first three parameters are zero. Next the MPC is used to calculate for 
+  * steering angle
+  * throttle value
+  * predicted points (those are shown in green in the simulator)
+Afterwards, points are calculated to show the 'ideal' way, where the cte is as low as possible (the yellow line in the simulator).
+
+* Model Predictive Control with Latency
+Latency of 100ms is introduced. This means that after values have been calculated, a delay of 100ms is introduced before those values are sent back to the simulator. We take thise value into account when recalculating the model.
+
 ---
 
 ## Dependencies
