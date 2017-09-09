@@ -15,6 +15,11 @@ Self-Driving Car Engineer Nanodegree Program
 
 * Timestep Length and Elapsed Duration (N & dt)
 As values, I used the default values. This means that N=10, and dt=0.1. This means that the controller uses a (10 * 0.1s = 1s) timeframe to find a proper traject, and correct for errors.
+An important formula here is T=N*dt, in which T is the prediction horizon over which future predictions are made. T should be a few seconds at most. Beyond that horizon, the environment will change enough that it won't make sense to predict any further in the future. 
+Choosing high value for N, results in a (very) low value for dt. Lower values of dt result in more frequent actuations, which make more accurate appromiations to a continues reference trajectory. So the lower dt, the better. But, as N gets larger, the length of the number of variables to optimize for the MPC increases significantly. And this has a huge impact on the computational cost. <br>
+So:
+  * the higher N, the lower dt: more accurate approximation, but computationally expensive
+  * the lower N, the higher dt: less accurate approximation, but computationally less expensive
 
 * Polynomial Fitting and MPC Preprocessing
 First the waypoints are transformed from world coordinates into car coordinates. This allows for easier calculation afterwards. Next the coefficients are calculated and the state vector is created. As we're in car coordinate system, the first three parameters are zero. Next the MPC is used to calculate for 
